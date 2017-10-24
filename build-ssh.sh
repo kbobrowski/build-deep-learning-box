@@ -12,8 +12,8 @@ fi
 # set up ssh client
 ssh-keygen
 sudo apt -y install keychain
-echo 'alias add-key="keychain ~/.ssh/id_rsa && source ~/.keychain/$HOST-sh"' >> $rcfile
-echo 'source ~/.keychain/$HOST-sh' >> $rcfile
+echo 'alias add-key="keychain ~/.ssh/id_rsa && source ~/.keychain/$(hostname)-sh"' >> $rcfile
+echo 'source ~/.keychain/$(hostname)-sh' >> $rcfile
 
 
 # set up ssh server
