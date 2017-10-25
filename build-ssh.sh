@@ -12,9 +12,12 @@ fi
 # set up ssh client
 ssh-keygen
 sudo apt -y install keychain
-echo 'alias add-key="keychain ~/.ssh/id_rsa && source ~/.keychain/$(hostname)-sh"' >> $rcfile
-echo 'source ~/.keychain/$(hostname)-sh' >> $rcfile
-
+tee -a $rcfile <<< \
+'keychainfile=~/.keychain/$(hostname)-sh
+alias add-key="keychain ~/.ssh/id_rsa && source $keychainfile"
+if [ -f $keychainfile ]; then
+  source ~/.keychain/$(hostname)-sh
+fi'
 
 # set up ssh server
 sudo apt -y install openssh-server
@@ -26,4 +29,5 @@ sudo sed -i -e 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/
 sudo systemctl restart ssh
 touch ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
+
 sudo reboot now
